@@ -1,0 +1,9 @@
+{
+  "name": "project-adoption",
+  "title": "Bind adoption to the project-root agent rule entry",
+  "interface": "CLI: node tools/adopt.mjs <project-root> [--graph <relative-dir>] [--apply | --check]. Default is read-only preview. Apply merges a single managed protocol block into root AGENTS.md and existing CLAUDE.md, preserves unrelated rules, installs a checked root-entry law and receipt, and rejects scope escapes/conflicts before writes. Check fails on drift. Init binds new project roots automatically.",
+  "acceptance": "node --test acceptance/project-adoption.test.mjs acceptance/project-adoption-safety.test.mjs acceptance/project-init.test.mjs",
+  "nl_description": "Cloning alone is not adoption. Whole-project frontier/submission/verify discipline must be discoverable at the actual root, continuously checked, and preserve local permissions/human approvals.",
+  "serves": null,
+  "env": "node>=20"
+}

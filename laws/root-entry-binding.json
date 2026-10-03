@@ -1,0 +1,6 @@
+{
+  "id": "root-entry-binding",
+  "dimension": "execution-protocol",
+  "statement": "The project-root rule entry must bind the entire project to this graph.",
+  "check": "node tools/adopt.mjs '.' --graph '.' --check"
+}

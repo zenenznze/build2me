@@ -12,13 +12,46 @@ reopened downstream routed automatically.
 [Protocol](PROTOCOL.md) · [Stub semantics](STUBS.md) · [Rendered DAG](docs/DAG.md) · [Race 001](races/001-deprecation-cascade.md) · [中文](README.zh-CN.md)
 
 [![verify](https://github.com/shitianfang/build2me/actions/workflows/verify.yml/badge.svg)](https://github.com/shitianfang/build2me/actions/workflows/verify.yml)
-**14 / 16 contracts Done · frontier empty · 2 statements revised live · built by a swarm under its own protocol**
+**15 / 17 contracts Done · frontier empty · 2 statements revised live · built by a swarm under its own protocol**
 
 ```sh
 node tools/init.mjs ../my-system --root my-system   # scaffold your own project
 ```
 
 ---
+
+## Adoption is more than cloning
+
+**Cloning into a subdirectory does not activate the protocol in the enclosing
+project.** Bind it to the actual project-root agent entry before doing work.
+
+- New projects: `init.mjs` now installs a managed block in root `AGENTS.md`,
+  a `.build2me.json` receipt, and a verifier law checking that binding.
+- Existing projects with a graph (including one in a subdirectory):
+
+```sh
+node /path/to/build2me/tools/adopt.mjs /path/to/project --graph work/map
+node /path/to/build2me/tools/adopt.mjs /path/to/project --graph work/map --apply
+node /path/to/project/work/map/tools/adopt.mjs /path/to/project --graph work/map --check
+```
+
+The first command is a **read-only preview**. Apply preserves project rules
+outside one managed block, also merges an existing `CLAUDE.md`, copies binding
+tools into the graph, and is repeatable. External graph/rule links, malformed
+markers and conflicting owned files fail before writes. The target must be the
+Git root when it belongs to a Git repository; do not target only the clone.
+
+Read the complete protocol, publish task contracts, then use
+**frontier → work → submission → verify → new frontier** for every stage.
+If requested work is absent, extend/revise the graph; an empty frontier is not
+permission to switch back to an off-map workflow. Root-rule drift fails the
+installed law on the next verify pass.
+
+This is a discoverable rule plus a checked binding, **not a sandbox or a
+guarantee an LLM will obey it**. Gates still need to cover real acceptance.
+Local safety, permissions, and required human reviews remain authoritative:
+model-authored approval is not human signoff. Track those approvals as explicit
+dependencies, rather than treating a technical PASS as approval.
 
 ## Why this exists
 
@@ -283,6 +316,7 @@ Every tool takes `--dir <project>` and defaults to the current directory.
 | command | what it does |
 |---|---|
 | `node tools/init.mjs <dir> [--root <name>] [--force]` | Scaffolds a new project: kernel, root contract, starter gate, laws, CI. Refuses a non-empty directory unless forced; never overwrites. |
+| `node tools/adopt.mjs <root> [--graph <relative-dir>] [--apply\|--check]` | Bind an existing graph to actual root rules; preview by default, preserve local rules, check adoption drift. |
 | `node tools/verify.mjs [--json]` | **The kernel.** Validates structure, rejects cycles and self-imports, runs acceptance gates, derives statuses and verdicts by fixpoint. Non-zero on any structural error or failing gate. |
 | `node tools/frontier.mjs [--json]` | **The scheduler.** Actionable Open contracts ranked by closability. |
 | `node tools/graph.mjs [--format json\|mermaid\|dot]` | DAG export with derived statuses; edges styled by verdict. `dot` needs graphviz to render, `mermaid` renders on GitHub. |

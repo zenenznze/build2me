@@ -15,6 +15,26 @@ is the only thing anyone trusts.**
 
 An agent that has read this file can participate correctly.
 
+## Project-root adoption (required before execution)
+
+A clone is source code, not project adoption. Before work, use
+`tools/init.mjs` for a new project or `tools/adopt.mjs <project-root>
+--graph <relative-dir>` for an existing graph. Preview first, then apply.
+The managed project-root rule block must point to this protocol and the real
+graph; `--check` and the installed `root-entry-binding` law reject drift.
+Keep existing local rules and human authority; never import a sibling
+project's instructions or modify global client configuration.
+
+This applies throughout the project, not only to its first stage. If a task
+has no contract, add an audited statement and gate before implementing it.
+A finished subgraph or empty frontier does not authorize off-map work.
+Represent required external permission or human review as explicit
+dependencies with version-bound evidence. A technical gate cannot grant
+permission or manufacture approval.
+
+The binding improves discovery and makes drift detectable; it does not
+sandbox agents or prove gates are complete.
+
 ## Objects
 
 A build2me project is a directory (typically a git repository) with:

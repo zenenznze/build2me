@@ -29,6 +29,8 @@ Declared as objects (`laws/<id>.json`, run by the verifier on every pass):
   equal the derived DAG status. The hand-typed line went stale twice in the
   repo's first day.
 
+- **root-entry-binding** (execution-protocol) — project-root AGENTS.md binds all stages to the graph. Installed by init/adopt and checked on every verification pass; preserves local permissions and human reviews.
+
 To add one: measure where you stand, write `laws/<id>.json` with
 `{id, dimension, statement, check}`, and tighten the floor deliberately when
 you have margin. A check must never invoke `verify.mjs` — verify runs the

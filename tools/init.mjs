@@ -9,6 +9,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
+import { planIntegration, applyIntegration, preflightRuleEntries } from './integration.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const source = path.resolve(here, '..');
@@ -66,7 +67,21 @@ if (fs.existsSync(target)) {
   }
 }
 
-const KERNEL = ['lib.mjs', 'verify.mjs', 'frontier.mjs', 'graph.mjs', 'deprecate.mjs', 'revise.mjs', 'stub.mjs', 'check-immutability.sh'];
+try {
+  preflightRuleEntries(target);
+  for (const name of ['adopt.mjs', 'integration.mjs']) {
+    const existing = path.join(target, 'tools', name);
+    if (fs.existsSync(existing) && !fs.readFileSync(existing).equals(fs.readFileSync(path.join(source, 'tools', name)))) {
+      fail('existing binding tool conflicts: ' + existing);
+    }
+  }
+  const receipt = path.join(target, '.build2me.json');
+  if (fs.existsSync(receipt) && fs.readFileSync(receipt, 'utf8') !== JSON.stringify({
+    schema_version: 1, graph: '.', protocol: 'PROTOCOL.md', scope: 'whole-project'
+  }, null, 2) + '\n') fail('existing adoption receipt conflicts');
+} catch (error) { fail(error.message); }
+
+const KERNEL = ['adopt.mjs', 'integration.mjs', 'lib.mjs', 'verify.mjs', 'frontier.mjs', 'graph.mjs', 'deprecate.mjs', 'revise.mjs', 'stub.mjs', 'check-immutability.sh'];
 const written = [];
 const write = (rel, content) => {
   const file = path.join(target, rel);
@@ -201,6 +216,8 @@ jobs:
       - name: verify
         run: node tools/verify.mjs
 `);
+
+applyIntegration(planIntegration(target, target));
 
 console.log(`build2me project created at ${target}`);
 console.log(`  root contract: ${rootName}    (${written.length} files written)`);

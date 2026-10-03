@@ -5,13 +5,32 @@
 [协议全文](PROTOCOL.md)（英文） · [桩语义](STUBS.md) · [DAG 图](docs/DAG.md) · [Race 001](races/001-deprecation-cascade.md) · [English](README.md)
 
 [![verify](https://github.com/shitianfang/build2me/actions/workflows/verify.yml/badge.svg)](https://github.com/shitianfang/build2me/actions/workflows/verify.yml)
-**14 / 16 契约 Done · 前沿清空 · 两条陈述已在线修订 · 由一群 agent 在它自己的协议下建成**
+**15 / 17 契约 Done · 前沿清空 · 两条陈述已在线修订 · 由一群 agent 在它自己的协议下建成**
 
 ```sh
 node tools/init.mjs ../my-system --root my-system   # 用它开始你自己的项目
 ```
 
 ---
+
+## 接入项目：克隆不等于启用
+
+把仓库克隆到子目录，不会自动让上层工作目录使用协议。必须将规则绑定到**实际项目根目录**。
+
+- 新项目：`init.mjs` 自动创建根 `AGENTS.md` 的托管规则段、`.build2me.json` 接入记录和检查根入口的 law。
+- 已有项目/已有子目录控制图：
+
+```sh
+node /path/to/build2me/tools/adopt.mjs /path/to/project --graph work/map
+node /path/to/build2me/tools/adopt.mjs /path/to/project --graph work/map --apply
+node /path/to/project/work/map/tools/adopt.mjs /path/to/project --graph work/map --check
+```
+
+默认只读预览，`--apply` 才合并。保留托管段以外的原规则，也合并已有 `CLAUDE.md`，可重复运行。拒绝项目外链接、错误标记和冲突文件；Git项目必须指定真实根目录。没有全局配置或安装依赖。
+
+后续**所有阶段**都走 frontier → 执行 → submission → verify → 新 frontier。没有合同先扩图/修订，不得把空 frontier 当作脱离图工作许可。入口漂移会在下次verify被law拒绝。
+
+这不是模型行为沙箱；验收门仍须覆盖真实交付。项目权限、安全和人工审核优先，技术PASS不能生成用户审批，应把真实审批作为依赖。
 
 ## 为什么要有这么个东西
 

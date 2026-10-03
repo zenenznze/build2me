@@ -1,0 +1,13 @@
+{
+  "contract": "project-adoption",
+  "kind": "implementation",
+  "imports": [
+    "project-init"
+  ],
+  "files": [
+    "tools/adopt.mjs",
+    "tools/integration.mjs",
+    "acceptance/project-adoption.test.mjs"
+  ],
+  "notes": "Preserve root rules and local human-approval authority. Read-only preview, explicit apply, drift check, existing-graph adoption and fresh init root binding."
+}

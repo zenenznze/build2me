@@ -1,0 +1,6 @@
+{
+  "schema_version": 1,
+  "graph": ".",
+  "protocol": "PROTOCOL.md",
+  "scope": "whole-project"
+}
